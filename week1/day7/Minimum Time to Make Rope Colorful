@@ -1,0 +1,22 @@
+class Solution {
+    public int minCost(String colors, int[] neededTime) {
+        int total_time = 0;
+        int n = colors.length();
+        
+        for (int i = 0; i < n; ) { 
+            char currentColor = colors.charAt(i);
+            int maxTime = 0;
+            int sumTime = 0;
+
+            while (i < n && colors.charAt(i) == currentColor) {
+                sumTime += neededTime[i];
+                maxTime = Math.max(maxTime, neededTime[i]);
+                i++;
+            }
+
+            total_time += (sumTime - maxTime);
+        }
+
+        return total_time;
+    }
+}
