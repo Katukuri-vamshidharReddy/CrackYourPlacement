@@ -1,0 +1,21 @@
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        HashMap<Integer, Integer> prefixSumCount = new HashMap<>();
+        prefixSumCount.put(0, 1);
+        
+        int cumulativeSum = 0;
+        int count = 0;
+        
+        for (int num : nums) {
+            cumulativeSum += num;
+            
+            if (prefixSumCount.containsKey(cumulativeSum - k)) {
+                count += prefixSumCount.get(cumulativeSum - k);
+            }
+            
+            prefixSumCount.put(cumulativeSum, prefixSumCount.getOrDefault(cumulativeSum, 0) + 1);
+        }
+        
+        return count;
+    }
+}
