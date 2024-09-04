@@ -1,0 +1,42 @@
+import java.util.Deque;
+import java.util.LinkedList;
+
+class Stack<T> {
+    private Deque<T> deque = new LinkedList<>();
+
+    public void push(T item) {
+        deque.addFirst(item);
+    }
+
+    public T pop() {
+        return deque.removeFirst();
+    }
+
+    public T peek() {
+        return deque.peekFirst();
+    }
+
+    public boolean isEmpty() {
+        return deque.isEmpty();
+    }
+}
+
+class Queue<T> {
+    private Deque<T> deque = new LinkedList<>();
+
+    public void enqueue(T item) {
+        deque.addLast(item);
+    }
+
+    public T dequeue() {
+        return deque.removeFirst();
+    }
+
+    public T peek() {
+        return deque.peekFirst();
+    }
+
+    public boolean isEmpty() {
+        return deque.isEmpty();
+    }
+}
