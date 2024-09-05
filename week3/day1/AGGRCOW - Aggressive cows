@@ -1,0 +1,50 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class AggressiveCows {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter number of test cases:");
+        int t = sc.nextInt();
+        while (t-- > 0) {
+            System.out.println("Enter number of stalls (N) and cows (C):");
+            int N = sc.nextInt();
+            int C = sc.nextInt();
+            int[] stalls = new int[N];
+            System.out.println("Enter stall locations:");
+            for (int i = 0; i < N; i++) {
+                stalls[i] = sc.nextInt();
+            }
+            Arrays.sort(stalls);
+            System.out.println("The largest minimum distance is: " + binarySearch(stalls, C));
+        }
+        sc.close();
+    }
+
+    public static int binarySearch(int[] stalls, int cows) {
+        int low = 1, high = stalls[stalls.length - 1] - stalls[0], res = 0;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (canPlaceCows(stalls, cows, mid)) {
+                res = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return res;
+    }
+
+    public static boolean canPlaceCows(int[] stalls, int cows, int minDist) {
+        int count = 1, lastPlaced = stalls[0];
+        for (int i = 1; i < stalls.length; i++) {
+            if (stalls[i] - lastPlaced >= minDist) {
+                count++;
+                lastPlaced = stalls[i];
+            }
+            if (count == cows) return true;
+        }
+        return false;
+    }
+}
