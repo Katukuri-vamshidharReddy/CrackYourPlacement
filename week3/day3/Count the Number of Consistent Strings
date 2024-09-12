@@ -1,0 +1,22 @@
+class Solution {
+    public int countConsistentStrings(String allowed, String[] words) {
+        int[] allowedSet = new int[26];
+        for (char c : allowed.toCharArray()) {
+            allowedSet[c - 'a'] = 1;
+        }
+        
+        int count = 0;
+        for (String word : words) {
+            boolean isConsistent = true;
+            for (char c : word.toCharArray()) {
+                if (allowedSet[c - 'a'] == 0) {
+                    isConsistent = false;
+                    break;
+                }
+            }
+            if (isConsistent) count++;
+        }
+        
+        return count;
+    }
+}
