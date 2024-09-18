@@ -1,0 +1,46 @@
+class Solution {
+    public int maximalRectangle(int[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0) return 0;
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        
+        int[][] transformed = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                transformed[i][j] = (matrix[i][j] == 0) ? -1 : 1;
+            }
+        }
+
+        int maxArea = 0;
+
+        for (int startRow = 0; startRow < rows; startRow++) {
+            int[] prefixSum = new int[cols];
+            for (int endRow = startRow; endRow < rows; endRow++) {
+                for (int col = 0; col < cols; col++) {
+                    prefixSum[col] += transformed[endRow][col];
+                }
+                maxArea = Math.max(maxArea, findMaxAreaWithZeroSum(prefixSum));
+            }
+        }
+
+        return maxArea;
+    }
+
+    private int findMaxAreaWithZeroSum(int[] prefixSum) {
+        int maxArea = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+        int sum = 0;
+        for (int i = 0; i < prefixSum.length; i++) {
+            sum += prefixSum[i];
+            if (map.containsKey(sum)) {
+                int width = i - map.get(sum);
+                int height = 1;
+                maxArea = Math.max(maxArea, width * height);
+            } else {
+                map.put(sum, i);
+            }
+        }
+        return maxArea;
+    }
+}
