@@ -1,0 +1,20 @@
+class Solution {
+    public String largestNumber(int[] nums) {
+        String[] strNums = new String[nums.length];
+        int index = 0;
+        for (int num : nums) {
+            strNums[index++] = Integer.toString(num);
+        }
+
+        Arrays.sort(strNums, (a, b) -> (b + a).compareTo(a + b));
+        
+        if (strNums[0].equals("0")) return "0";
+
+        StringBuilder result = new StringBuilder();
+        for (String str : strNums) {
+            result.append(str);
+        }
+
+        return result.toString();
+    }
+}
