@@ -1,0 +1,63 @@
+class Solution {
+    public List<Integer> diffWaysToCompute(String expression) {
+        List<Object> tokens = tokenize(expression);
+        return compute(tokens, 0, tokens.size() - 1, new HashMap<>());
+    }
+
+    private List<Object> tokenize(String expression) {
+        List<Object> tokens = new ArrayList<>();
+        int num = 0;
+        boolean buildingNumber = false;
+        
+        for (char ch : expression.toCharArray()) {
+            if (Character.isDigit(ch)) {
+                num = num * 10 + (ch - '0');
+                buildingNumber = true;
+            } else {
+                if (buildingNumber) {
+                    tokens.add(num);
+                    num = 0;
+                    buildingNumber = false;
+                }
+                tokens.add(ch);
+            }
+        }
+        if (buildingNumber) tokens.add(num);
+        
+        return tokens;
+    }
+
+    private List<Integer> compute(List<Object> tokens, int start, int end, Map<String, List<Integer>> memo) {
+        String key = start + "," + end;
+        if (memo.containsKey(key)) return memo.get(key);
+        
+        List<Integer> results = new ArrayList<>();
+        
+        for (int i = start; i <= end; i++) {
+            if (tokens.get(i) instanceof Character) {
+                char operator = (char) tokens.get(i);
+                List<Integer> leftResults = compute(tokens, start, i - 1, memo);
+                List<Integer> rightResults = compute(tokens, i + 1, end, memo);
+                
+                for (int left : leftResults) {
+                    for (int right : rightResults) {
+                        if (operator == '+') {
+                            results.add(left + right);
+                        } else if (operator == '-') {
+                            results.add(left - right);
+                        } else if (operator == '*') {
+                            results.add(left * right);
+                        }
+                    }
+                }
+            }
+        }
+        
+        if (results.isEmpty()) {
+            results.add((int) tokens.get(start));
+        }
+        
+        memo.put(key, results);
+        return results;
+    }
+}
