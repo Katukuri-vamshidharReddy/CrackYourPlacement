@@ -1,0 +1,38 @@
+class Solution {
+    public int splitArray(int[] nums, int k) {
+        int n = nums.length;
+        int left = 0, right = 0;
+
+        for (int num : nums) {
+            left = Math.max(left, num);
+            right += num;
+        }
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (can(nums, mid, k)) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+    private boolean can(int[] nums, int mid, int k) {
+        int count = 1;
+        int total = 0;
+
+        for (int num : nums) {
+            total += num;
+            if (total > mid) {
+                count++;
+                total = num;
+                if (count > k) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
